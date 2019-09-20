@@ -7,7 +7,7 @@ from .utils.ipython import gpu_mem_restore
 import inspect
 from fastprogress.fastprogress import format_time, IN_NOTEBOOK
 from time import time
-from fastai.sixel import plot_sixel
+from .sixel import plot_sixel
 
 __all__ = ['Learner', 'LearnerCallback', 'Recorder', 'RecordOnCPU', 'fit', 'loss_batch', 'train_epoch', 'validate',
            'get_preds', 'load_learner']
@@ -26,7 +26,7 @@ def loss_batch(model:nn.Module, xb:Tensor, yb:Tensor, loss_func:OptLossFunc=None
     out = model(*xb)
     out = cb_handler.on_loss_begin(out)
 
-    if not loss_func: return to_detach(out), yb[0].detach()
+    if not loss_func: return to_detach(out), to_detach(yb[0])
     loss = loss_func(out, *yb)
 
     if opt is not None:
@@ -452,6 +452,7 @@ class Recorder(LearnerCallback):
     _order=-10
     def __init__(self, learn:Learner, add_time:bool=True, silent:bool=False):
         super().__init__(learn)
+        if not getattr(self.learn, 'opt', False): self.learn.create_opt(defaults.lr, self.learn.wd)
         self.opt = self.learn.opt
         self.train_dl = self.learn.data.train_dl
         self.no_val,self.silent,self.add_time = False,silent,add_time
