@@ -11,7 +11,17 @@ Github. Parentheses after an item show the name or github id of the contributor
 of that change.
 
 
-## 1.0.58.dev0 (Work In Progress)
+## 1.0.59.dev0 (Work In Progress)
+
+### New:
+
+### Changed:
+
+### Fixed:
+
+
+
+## 1.0.58 (2019-09-29)
 
 ### New:
 
@@ -21,7 +31,7 @@ of that change.
 
 ### Fixed:
 
-
+- `typing` removed as a dep since it's done nothing since py34 and we require py35+.
 
 ## 1.0.57 (2019-08-09)
 
